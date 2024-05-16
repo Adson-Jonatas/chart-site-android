@@ -1,17 +1,17 @@
 name: deploy-site-android
 namespace: "frontend"
 spec:
-  replicas: 4
+  replicas: 2
   matchLabels: "app: site-android"
 
 strategy:
   type: "RollingUpdate"
   rollingUpdate:
-    enable: true
-    maxSurge: 4
+    enable: true  
+    maxSurge: 1
     maxUnavailable: 1
 
-template:
+template:   
   name: "pod-site-android"
   labels:
   - "app: site-android"
@@ -34,6 +34,7 @@ containers:
     failurethreshold: 3
     successThreshold: 1
 
+
   readinessProbe:
     enable: true
     command:
@@ -51,10 +52,10 @@ containers:
 
   resources:
     requests:
-      cpu: "50m"
+      cpu: "20m"
       memory: "128Mi"
     limits:
-      cpu: "70m"
+      cpu: "24m"
       memory: "128Mi"
 
 

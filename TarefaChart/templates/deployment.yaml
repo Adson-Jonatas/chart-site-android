@@ -28,7 +28,6 @@ spec:
       {{- with .Values.containers}}
         - name: {{.name}}
           image: {{.image}}
-          imagePullPolicy: "Always"
           {{- if ".livenessProbe.enable true"}}
           volumeMounts:
           - name: {{.volumeMounts.name}}

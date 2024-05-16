@@ -1,5 +1,11 @@
-Para consultar o chart {{.Release.Name}} digite o comando abaixo:
 
+
+Para consultar o chart {{.Release.Name}} digite o comando abaixo:
+  
+  $ helm list
   $ helm status {{.Release.Name}}
 
-  Obrigado!
+  
+author  : Adson Jonatas
+email   : adson.jotta@gmail.com
+linkedin: https://www.linkedin.com/in/adson-jonatas
