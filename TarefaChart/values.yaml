@@ -1,0 +1,71 @@
+name: deploy-site-android
+namespace: "frontend"
+spec:
+  replicas: 4
+  matchLabels: "app: site-android"
+
+strategy:
+  type: "RollingUpdate"
+  rollingUpdate:
+    enable: true
+    maxSurge: 4
+    maxUnavailable: 1
+
+template:
+  name: "pod-site-android"
+  labels:
+  - "app: site-android"
+  - "svc: site-android"
+  backoffLimits: 8
+  volumes:
+    name: "volume-site-android"
+
+containers:
+  name: "container-site-android"
+  image: "jottasilva/site-android:v2.1"
+  imagePullPolicy: "Always"
+  livenessProbe:
+    enable: true
+    httpGet:
+      path: "/"
+      port: 8082
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failurethreshold: 3
+    successThreshold: 1
+
+  readinessProbe:
+    enable: true
+    command:
+    - curl
+    - -f
+    - http://localhost:8082/
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 2
+    successThreshold: 1
+
+  volumeMounts:
+    name: "volume-site-android"
+    mountPath: "/teste"
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "70m"
+      memory: "128Mi"
+
+
+service:
+  enable: true
+  name: "service-site-android"
+  namespace: "frontend"
+  type: "NodePort"
+  selector: "svc: site-android"
+  ports:
+    name: "port-chart"
+    port: 80
+    targetPort: 8082
+    nodePort: 31402

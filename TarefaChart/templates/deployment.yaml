@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{.Values.name}}
+  namespace: {{.Values.namespace}}
+spec:
+  strategy:
+    type: {{.Values.strategy.type}}
+    {{- if ".Values.strategy.type.rollingUpdate.enable true"}}
+    rollingUpdate:
+      maxSurge: {{.Values.strategy.rollingUpdate.maxSurge}}
+      maxUnavailable: {{.Values.strategy.rollingUpdate.maxUnavailable}}
+    {{- end}}
+  replicas: {{.Values.spec.replicas}}
+  selector:
+    matchLabels: 
+      {{.Values.spec.matchLabels}}      
+  template:
+    metadata:
+      name: {{.Values.template.name}}
+      labels:
+      {{- range .Values.template.labels}}
+        {{.}}
+      {{- end}}
+    spec:
+      containers:
+      {{- with .Values.containers}}
+        - name: {{.name}}
+          image: {{.image}}
+          imagePullPolicy: "Always"
+          {{- if ".livenessProbe.enable true"}}
+          volumeMounts:
+          - name: {{.volumeMounts.name}}
+            mountPath: {{.volumeMounts.mountPath}}
+          livenessProbe:
+            httpGet:
+              path: {{.livenessProbe.httpGet.path}}
+              port: {{.livenessProbe.httpGet.port}} 
+            initialDelaySeconds: {{.livenessProbe.initialDelaySeconds}}
+            periodSeconds: {{.livenessProbe.periodSeconds}}
+            failureThreshold: {{.livenessProbe.failureThreshold}}
+            successThreshold: {{.livenessProbe.successThreshold}}
+          {{- end}}
+          {{- if ".readinessProbe.enable true"}}
+          readinessProbe:
+            exec:
+              command:
+              {{- range .readinessProbe.command}}
+                - {{.}}
+              {{- end}}
+            initialDelaySeconds: {{.readinessProbe.initialDelaySeconds}}
+            periodSeconds: {{.readinessProbe.periodSeconds}}
+            failureThreshold: {{.readinessProbe.failureThreshold}}
+            successThreshold: {{.readinessProbe.successThreshold}}
+          {{- end}}
+          resources: 
+            requests:
+              cpu: {{.resources.requests.cpu}}
+              memory: {{.resources.requests.memory}}
+            limits:
+              cpu: {{.resources.limits.cpu}}
+              memory: {{.resources.limits.memory}}
+      {{- end}}
+      volumes:
+      - name: {{.Values.template.volumes.name}}
+        emptyDir: {}      

@@ -1,0 +1,5 @@
+Para consultar o chart {{.Release.Name}} digite o comando abaixo:
+
+  $ helm status {{.Release.Name}}
+
+  Obrigado!

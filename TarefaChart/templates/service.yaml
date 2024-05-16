@@ -1,0 +1,17 @@
+{{- if eq .Values.service.enable true}}
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{.Values.service.name}}
+  namespace: {{.Values.service.namespace}}
+spec:
+  type: {{.Values.service.type}}
+  selector:
+    {{.Values.service.selector}}
+  ports:
+  - name: {{.Values.service.ports.name}}
+    port: {{.Values.service.ports.port}}
+    targetPort: {{.Values.service.ports.targetPort}}
+    nodePort: {{.Values.service.ports.nodePort}}
+{{- end}}
