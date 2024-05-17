@@ -1,0 +1,11 @@
+# Arquivo .gitattributes
+
+# Arquivos YAML, comuns em configurações do Kubernetes e Helm
+*.yaml linguist-detectable=true
+*.yml linguist-detectable=true
+
+# Arquivos Dockerfile
+Dockerfile linguist-detectable=true
+
+# Arquivos de script Shell
+*.sh linguist-detectable=true
