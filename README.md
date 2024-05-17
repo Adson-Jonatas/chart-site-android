@@ -1,2 +1,2 @@
-# helm-chart-tarefas
-Helm Chart de uma aplicação em PHP e MySQL.
+# Chart-Site-Android
+Helm Chart de um site nginx.
