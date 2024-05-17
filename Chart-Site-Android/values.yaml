@@ -23,7 +23,6 @@ template:
 containers:
   name: "container-site-android"
   image: "jottasilva/site-android:v2.1"
-  imagePullPolicy: "Always"
   livenessProbe:
     enable: true
     httpGet:
